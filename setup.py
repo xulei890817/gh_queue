@@ -4,7 +4,7 @@ from setuptools import setup, find_packages, __version__ as setuptools_version
 setup(
     name='MixQueue',
     version='0.1',
-    packages=find_packages(exclude=["MixQueue"]),
+    packages=find_packages(),
     url='',
     license='',
     author='leixu',
