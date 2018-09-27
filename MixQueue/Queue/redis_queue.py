@@ -1,6 +1,7 @@
 import redis
 
 from MixQueue.Queue import BaseQueue
+from MixQueue.Queue.d_error import GetValueTimeOutError, NoValueError
 
 
 class RedisQueue(BaseQueue):
@@ -37,13 +38,20 @@ class RedisQueue(BaseQueue):
         return self.r.llen(key)
 
     def get(self, key, timeout=2):
-        self.r.blpop(key, timeout=timeout)
+        try:
+            result = self.r.blpop(key, timeout=timeout)
+            return result
+        except Exception as e:
+            raise GetValueTimeOutError
 
     def put(self, key, value):
         self.r.rpush(key, value)
 
     def get_nowait(self, key):
-        self.r.lpop(key)
+        result = self.r.lpop(key)
+        if result is None:
+            raise NoValueError
+        return result
 
     def put_nowait(self, key, value):
         self.r.rpush(key, value)
