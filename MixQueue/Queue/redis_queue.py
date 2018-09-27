@@ -13,16 +13,18 @@ class RedisQueue(BaseQueue):
         return self.r
 
     def push_left(self, key, value):
-        return self.r.lpushx(key, *value)
+        return self.r.lpush(key, value)
 
     def push_array_left(self, key, *value):
-        return self.r.lpush(key, *value)
+        for _value in value:
+            return self.r.lpush(key, _value)
 
     def push_right(self, key, value):
-        return self.r.rpushx(key, value)
+        return self.r.rpush(key, value)
 
     def push_array_right(self, key, *value):
-        return self.r.rpush(key, *value)
+        for _value in value:
+            return self.r.rpush(key, _value)
 
     def pop_left(self, key):
         return self.r.lpop(key)
@@ -38,10 +40,10 @@ class RedisQueue(BaseQueue):
         self.r.blpop(key, timeout=timeout)
 
     def put(self, key, value):
-        self.r.rpushx(key, value)
+        self.r.rpush(key, value)
 
     def get_nowait(self, key):
         self.r.lpop(key)
 
     def put_nowait(self, key, value):
-        self.r.rpushx(key, value)
+        self.r.rpush(key, value)
