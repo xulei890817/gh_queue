@@ -53,5 +53,11 @@ class RedisQueue(BaseQueue):
             raise NoValueError
         return result
 
+    def get_batch_nowait(self, key, size):
+        result = self.r.lrange(key, 0, size)
+        if result is None:
+            raise NoValueError
+        return result
+
     def put_nowait(self, key, value):
         self.r.rpush(key, value)

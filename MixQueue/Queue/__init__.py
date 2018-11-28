@@ -47,5 +47,9 @@ class BaseQueue(metaclass=ABCMeta):
         pass
 
     @abstractmethod
+    def get_batch_nowait(self):
+        pass
+
+    @abstractmethod
     def put_nowait(self):
         pass
