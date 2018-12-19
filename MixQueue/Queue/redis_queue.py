@@ -62,8 +62,3 @@ class RedisQueue(BaseQueue):
     def put_nowait(self, key, value):
         self.r.rpush(key, value)
 
-
-if __name__ == "__main__":
-    rq = RedisQueue(host="192.167.8.190", port=6500, db="29", password="lG5judg6r9S9Wwt4WA-Uid0FzkP8ZkV0XV1kmX941K4")
-    rq.put_nowait("my", "my")
-    print(rq.get_nowait("my"))
