@@ -6,9 +6,9 @@ from MixQueue.Queue.d_error import GetValueTimeOutError, NoValueError
 
 class RedisQueue(BaseQueue):
 
-    def __init__(self, host, port=6379, db=0):
+    def __init__(self, host, port=6379, db=0, password=None, *args, **kwargs):
         super(RedisQueue, self).__init__()
-        self.r = redis.StrictRedis(host=host, port=port, db=db)
+        self.r = redis.StrictRedis(host=host, port=port, db=db, password=password, *args, **kwargs)
 
     def get_client(self):
         return self.r
@@ -61,3 +61,9 @@ class RedisQueue(BaseQueue):
 
     def put_nowait(self, key, value):
         self.r.rpush(key, value)
+
+
+if __name__ == "__main__":
+    rq = RedisQueue(host="192.167.8.190", port=6500, db="29", password="lG5judg6r9S9Wwt4WA-Uid0FzkP8ZkV0XV1kmX941K4")
+    rq.put_nowait("my", "my")
+    print(rq.get_nowait("my"))
